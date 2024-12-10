@@ -116,7 +116,7 @@ resource "google_compute_region_autoscaler" "default" {
     scaling_schedules {
       name                  = "office-hours"
       min_required_replicas = 1
-      schedule              = "30 13 * * 1-5" # Mon-Fri, 8 AM
+      schedule              = "00 08 * * 1-5" # Mon-Fri, 8 AM
       time_zone             = "Asia/Jakarta"
       duration_sec          = 32400 # 9 hours from 8 AM to 5 PM
     }
@@ -124,7 +124,7 @@ resource "google_compute_region_autoscaler" "default" {
     scaling_schedules {
       name                  = "off-office-hours"
       min_required_replicas = 0
-      schedule              = "30 15 * * 1-5" # Mon-Fri, 5 PM
+      schedule              = "00 17 * * 1-5" # Mon-Fri, 5 PM
       time_zone             = "Asia/Jakarta"
       duration_sec          = 54000 # 15 hours from 5 PM to 8 AM
     }
