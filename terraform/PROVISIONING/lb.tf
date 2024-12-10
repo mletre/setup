@@ -8,7 +8,7 @@ resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   region                = var.region
   ip_protocol           = "TCP"
   load_balancing_scheme = "INTERNAL_MANAGED"
-  port_range            = "80"
+  port_range            = "8080"
   target                = google_compute_region_target_http_proxy.default.id
   network               = var.vpc
   subnetwork            = var.subnet
