@@ -8,11 +8,11 @@ variable "region" {
 }
 variable "zone" {
   type    = string
-  default = "asia-southeast2-c"
+  default = "asia-southeast2-a"
 }
 variable "compute_sa" {
   type    = string
-  default = "xxxxxxx-compute@developer.gserviceaccount.com"
+  default = "xxx@project-me.iam.gserviceaccount.com"
 }
 variable "vpc" {
   type    = string
@@ -24,7 +24,7 @@ variable "subnet" {
 }
 variable "subnet_proxy" {
   type    = string
-  default = "rev-sub"
+  default = "rev-subnet"
 }
 variable "scatic_ip" {
   type    = string

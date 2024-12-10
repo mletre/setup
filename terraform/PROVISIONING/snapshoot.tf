@@ -1,7 +1,7 @@
 
 # # Create Snapshot Policy
 # resource "google_compute_resource_policy" "create_snapshot_policy" {
-#   name   = "snapshot-policy-at-1-am"
+#   name   = "snapshot-policy-at-1-am-tf"
 #   region = var.region
 #   snapshot_schedule_policy {
 #     schedule {

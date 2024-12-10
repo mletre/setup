@@ -44,9 +44,13 @@ resource "google_compute_region_backend_service" "default" {
   timeout_sec           = 10
   health_checks         = [google_compute_region_health_check.default.id]
   backend {
-    group           = google_compute_instance_group_manager.mig.instance_group
+    group           = google_compute_region_instance_group_manager.mig.instance_group
     balancing_mode  = "UTILIZATION"
     capacity_scaler = 1.0
+  }
+  log_config {
+    enable      = true
+    sample_rate = 1.0 # Log every request (optional, defaults to 1.0)
   }
 }
 
