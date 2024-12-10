@@ -3,6 +3,18 @@
 resource "google_compute_image" "from_disk" {
   name        = "redhat-disk-image-${random_string.instance_name.result}"
   source_disk = data.google_compute_disk.source_disk.self_link
+  labels = {
+    name               = "redhat-disk-image-${random_string.instance_name.result}"
+    applicationname    = "application-name"
+    projectname        = "ap-xxxx"
+    environment        = "dev"
+    costcenter         = "cc-1234"
+    ownerteam          = "ops"
+    ownerteamtmail     = "ownermail"
+    dataclassification = "private"
+    backuppolicy       = "production"
+    downtime           = "weekend-only"
+  }
 }
 
 # Create New Template Instance base on the Image
@@ -44,6 +56,18 @@ resource "google_compute_instance_template" "new_template" {
     preemptible       = true
     automatic_restart = false
   }
+  labels = {
+    name               = "app-vm-template-${random_string.instance_name.result}"
+    applicationname    = "application-name"
+    projectname        = "ap-xxxx"
+    environment        = "dev"
+    costcenter         = "cc-1234"
+    ownerteam          = "ops"
+    ownerteamtmail     = "ownermail"
+    dataclassification = "private"
+    backuppolicy       = "production"
+    downtime           = "weekend-only"
+  }
 }
 
 # Create Health Check for Instance Group Manager
@@ -58,6 +82,7 @@ resource "google_compute_health_check" "health_check_mig" {
     request_path = "/"
     port         = "8080"
   }
+
 }
 
 # Create Instance Group Manager 
@@ -129,4 +154,5 @@ resource "google_compute_region_autoscaler" "default" {
       duration_sec          = 54000 # 15 hours from 5 PM to 8 AM
     }
   }
+
 }
