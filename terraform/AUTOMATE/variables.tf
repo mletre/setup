@@ -1,6 +1,6 @@
 variable "project" {
   type    = string
-  default = "project-me"
+  default = "cop-nonprod"
 }
 variable "region" {
   type    = string
@@ -8,25 +8,30 @@ variable "region" {
 }
 variable "zone" {
   type    = string
-  default = "asia-southeast2-c"
+  default = "asia-southeast2-a"
 }
 variable "compute_sa" {
   type    = string
-  default = "xxxxxxx-compute@developer.gserviceaccount.com"
+  default = "vm-sa-custom@cop-nonprod.iam.gserviceaccount.com"
 }
 variable "vpc" {
   type    = string
-  default = "vpc-me"
+  default = "https://www.googleapis.com/compute/v1/projects/shared-host-nonprod/global/networks/shared-host-nonprod"
 }
+
 variable "subnet" {
   type    = string
-  default = "sub-vpc-me"
+  default = "https://www.googleapis.com/compute/v1/projects/shared-host-nonprod/regions/asia-southeast2/subnetworks/sub-shared-host-nonprod"
 }
+
+# Subnet Proxy for Regional Load Balance
 variable "subnet_proxy" {
   type    = string
-  default = "rev-sub"
+  default = "https://www.googleapis.com/compute/v1/projects/shared-host-nonprod/regions/asia-southeast2/subnetworks/gcp-dev-proxylb-riplay"
 }
-variable "scatic_ip" {
-  type    = string
-  default = "for-lb"
-}
+
+# Static IP Address Name for LB
+# variable "scatic_ip" {
+#   type    = string
+#   default = "for-lb-ip"
+# }

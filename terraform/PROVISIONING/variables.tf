@@ -1,6 +1,6 @@
 variable "project" {
   type    = string
-  default = "project-me"
+  default = "xxx"
 }
 variable "region" {
   type    = string
@@ -12,21 +12,26 @@ variable "zone" {
 }
 variable "compute_sa" {
   type    = string
-  default = "xxx@project-me.iam.gserviceaccount.com"
+  default = "vm-sa-custom@xxx.iam.gserviceaccount.com"
 }
 variable "vpc" {
   type    = string
-  default = "vpc-me"
+  default = "https://www.googleapis.com/compute/v1/projects/net-project/global/networks/net-project"
 }
+
 variable "subnet" {
   type    = string
-  default = "sub-vpc-me"
+  default = "https://www.googleapis.com/compute/v1/projects/net-project/regions/asia-southeast2/subnetworks/sub-net-project"
 }
+
+# Subnet Proxy for Regional Load Balance
 variable "subnet_proxy" {
   type    = string
-  default = "rev-subnet"
+  default = "https://www.googleapis.com/compute/v1/projects/shared-host-nonprod/regions/asia-southeast2/subnetworks/gcp-dev-proxylb-riplay"
 }
+
+# Static IP Address Name for LB
 variable "scatic_ip" {
   type    = string
-  default = "for-lb"
+  default = "for-lb-ip"
 }

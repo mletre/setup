@@ -1,6 +1,6 @@
 # Define Master Instance
 data "google_compute_disk" "source_disk" {
-  name = "redhat-base"
+  name = "redhat-master"
   zone = var.zone
 }
 
