@@ -15,9 +15,9 @@
 
 resource "google_compute_region_ssl_certificate" "default" {
   name        = "certificate"
-  description = "Certificate SSL"
-  private_key = file("private.key")
-  certificate = file("cert.crt")
+  description = "a description"
+  private_key = file("server.key")
+  certificate = file("server.crt")
   region      = var.region
 
   lifecycle {

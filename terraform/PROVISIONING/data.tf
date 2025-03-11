@@ -1,12 +1,12 @@
 # Define Master Instance
 data "google_compute_disk" "source_disk" {
-  name = "redhat-master"
+  name = "master-instance"
   zone = var.zone
 }
 
 # Define your existing IP Address
 data "google_compute_address" "scatic_ip" {
-  name   = var.scatic_ip
+  name   = var.static_ip
   region = var.region
 }
 

@@ -1,5 +1,10 @@
 terraform {
+  # backend "gcs" {
+  #   bucket      = "tf-bakend-state-666"
+  #   credentials = "sa.json"
+  # }
   required_providers {
+
     google = {
       source  = "hashicorp/google"
       version = "6.12.0"

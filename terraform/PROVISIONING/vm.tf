@@ -1,36 +1,36 @@
 
 # Create Image From the Master Instance
 resource "google_compute_image" "from_disk" {
-  name        = "redhat-disk-image-${random_string.instance_name.result}"
+  name        = "master-disk-image-${random_string.instance_name.result}"
   source_disk = data.google_compute_disk.source_disk.self_link
+  image_encryption_key {
+    kms_key_self_link       = var.kms_name
+    kms_key_service_account = var.compute_sa
+  }
+  storage_locations = ["asia-southeast2"]
+  description       = "Managed By Terraform"
   labels = {
-    name            = "redhat-disk-image-${random_string.instance_name.result}"
+    name            = "master-disk-image-${random_string.instance_name.result}"
     applicationname = "cop"
     environment     = "dev"
   }
 }
 
 # Create New Template Instance base on the Image
-resource "google_compute_instance_template" "new_template" {
+resource "google_compute_region_instance_template" "new_template" {
   project      = var.project
   provider     = google-beta
+  region       = var.region
   description  = "Managed By Terraform"
   name         = "app-vm-template-${random_string.instance_name.result}"
   machine_type = "e2-custom-2-4096"
   tags         = ["cop-dev", "cicd-cop-dev"]
 
-  # resource_manager_tags = {
-  #   # Asume tag name = TagFW and Tag Value = web
-  #   "tagKeys/3535353535231" = "tagValues/3435353535"
-  # }
-  # If using multiple tags
-  # resource_manager_tags = {
-  #   # Asume tag name = TagFW and Tag Value = web
-  #   "tagKeys/43434343434" = "tagValues/123124121212" ,
-  #   "tagKeys/12121212" = "tagValues/12131313"
-  # }
 
   disk {
+    disk_encryption_key {
+      kms_key_self_link = var.kms_name
+    }
     source_image = google_compute_image.from_disk.self_link
     auto_delete  = true
     boot         = true
@@ -79,11 +79,16 @@ resource "google_compute_instance_template" "new_template" {
     applicationname = "cop"
     environment     = "dev"
   }
+  metadata = {
+    enable-oslogin         = true
+    block-project-ssh-keys = true
+  }
 }
 
 # Create Health Check for Instance Group Manager
-resource "google_compute_health_check" "health_check_mig" {
-  name                = "health-check-mig"
+resource "google_compute_region_health_check" "health_check_mig" {
+  name = "health-check-mig"
+
   check_interval_sec  = 10
   timeout_sec         = 5
   healthy_threshold   = 3
@@ -108,7 +113,7 @@ resource "google_compute_region_instance_group_manager" "mig" {
   distribution_policy_zones        = ["asia-southeast2-a", "asia-southeast2-b", "asia-southeast2-c"]
   distribution_policy_target_shape = "EVEN"
   version {
-    instance_template = google_compute_instance_template.new_template.id
+    instance_template = google_compute_region_instance_template.new_template.id
     name              = "primary"
   }
   named_port {
@@ -119,7 +124,7 @@ resource "google_compute_region_instance_group_manager" "mig" {
     create_before_destroy = true
   }
   auto_healing_policies {
-    health_check      = google_compute_health_check.health_check_mig.id
+    health_check      = google_compute_region_health_check.health_check_mig.id
     initial_delay_sec = 300
   }
   update_policy {
@@ -148,7 +153,6 @@ resource "google_compute_region_autoscaler" "default" {
     cpu_utilization {
       target = 0.90
     }
-
 
     # scaling_schedules {
     #   name                  = "office-hours"

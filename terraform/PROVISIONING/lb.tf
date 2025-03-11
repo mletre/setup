@@ -3,8 +3,8 @@
 resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   project               = var.project
   description           = "Managed By Terraform"
-  name                  = "app-lb-frontend-http"
-  ip_address            = data.google_compute_address.scatic_ip.address
+  name                  = "app-lb-frontend"
+  ip_address            = data.google_compute_address.static_ip.address
   provider              = google-beta
   region                = var.region
   ip_protocol           = "TCP"
@@ -15,7 +15,7 @@ resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   subnetwork            = var.subnet
   network_tier          = "PREMIUM"
   labels = {
-    name            = "app-lb-frontend-http"
+    name            = "app-lb-frontend"
     applicationname = "cop"
     environment     = "dev"
   }
@@ -26,7 +26,7 @@ resource "google_compute_forwarding_rule" "https_forwarding_rule" {
   project               = var.project
   description           = "Managed By Terraform"
   name                  = "app-lb-frontend-https"
-  ip_address            = data.google_compute_address.scatic_ip.address
+  ip_address            = data.google_compute_address.static_ip.address
   provider              = google-beta
   region                = var.region
   ip_protocol           = "TCP"
@@ -111,10 +111,9 @@ resource "google_compute_region_health_check" "default" {
   region              = var.region
   check_interval_sec  = 10
   timeout_sec         = 5
-  healthy_threshold   = 3
-  unhealthy_threshold = 3
+  healthy_threshold   = 2
+  unhealthy_threshold = 2
   http_health_check {
-    port         = 8080
-    request_path = "/"
+    port_specification = "USE_SERVING_PORT"
   }
 }

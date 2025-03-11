@@ -1,6 +1,6 @@
 variable "project" {
   type    = string
-  default = "xxx"
+  default = "project-id"
 }
 variable "region" {
   type    = string
@@ -8,30 +8,37 @@ variable "region" {
 }
 variable "zone" {
   type    = string
-  default = "asia-southeast2-a"
+  default = "asia-southeast2-b"
 }
 variable "compute_sa" {
   type    = string
-  default = "vm-sa-custom@xxx.iam.gserviceaccount.com"
+  default = "vm-sa-custom@project-id.iam.gserviceaccount.com"
 }
 variable "vpc" {
   type    = string
-  default = "https://www.googleapis.com/compute/v1/projects/net-project/global/networks/net-project"
+  default = "https://www.googleapis.com/compute/v1/projects/project-id/global/networks/net-testing"
 }
 
 variable "subnet" {
   type    = string
-  default = "https://www.googleapis.com/compute/v1/projects/net-project/regions/asia-southeast2/subnetworks/sub-net-project"
+  default = "https://www.googleapis.com/compute/v1/projects/project-id/regions/asia-southeast2/subnetworks/sub-net-testing"
 }
 
-# Subnet Proxy for Regional Load Balance
+# Subnet Proxy for Regional Load Balancer
 variable "subnet_proxy" {
   type    = string
-  default = "https://www.googleapis.com/compute/v1/projects/shared-host-nonprod/regions/asia-southeast2/subnetworks/gcp-dev-proxylb-riplay"
+  default = "https://www.googleapis.com/compute/v1/projects/project-id/regions/asia-southeast2/subnetworks/reverse-subnet-for-lb"
 }
 
 # Static IP Address Name for LB
-variable "scatic_ip" {
+variable "static_ip" {
   type    = string
   default = "for-lb-ip"
+}
+
+# Assign KMS Self Link
+# Example : projects/<project-name>/locations/<location-name>/keyRings/<keyring-name>/cryptoKeys/<key-name>
+variable "kms_name" {
+  type    = string
+  default = "projects/<project-name>/locations/<location-name>/keyRings/<keyring-name>/cryptoKeys/<key-name>"
 }
